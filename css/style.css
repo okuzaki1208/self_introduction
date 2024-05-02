@@ -1,0 +1,939 @@
+@charset "utf-8";
+
+
+
+body {
+	font-size: 1.8vw;
+	color: #ffffff;
+	/* -webkit-text-stroke: 1px #000000; */
+    /* background-image: url("../image/dot.png"); */
+    background-size: cover; /* 背景画像をウィンドウ全体に広げる */
+    background-position: center; /* 背景画像の位置を中央に配置する */
+    background-attachment: fixed; /* 背景画像を固定する */
+	height: 100vh;
+	background-repeat: no-repeat
+    /* その他の背景画像に関するスタイルを追加 */
+}
+
+.midashi {
+	color: #ffffff;
+	font-size: 2.9vw;
+	-webkit-text-stroke: 1px #000000;
+	text-align: center;
+}
+
+/* .zunda {
+	color: #ffffff;
+	font-size: 1.8vw;
+	-webkit-text-stroke: 1px #ffffff;
+} */
+
+#background_content {
+	text-align: center; /* コンテンツを中央揃え */
+  }
+  #openImageLink, #reloadButton {
+	padding: 10px 20px;
+	margin: 10px;
+	background-color: #007bff;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 5px;
+	font-size: 18px;
+	cursor: pointer;
+	display: inline-block; /* ボタンを横並びに配置 */
+  }
+
+  #openImageLink {
+	background-color: #ff6f6f;
+  }
+
+
+.nav {
+    display: flex;
+	flex-wrap:wrap;
+    justify-content: center; /* 全ての要素を中央に寄せる */
+    align-items: center;
+    padding-top: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+	padding-left:20px;
+	margin-right:10px;
+    width: 99%;
+}
+
+.navi-left {
+    flex: 1;
+    position: absolute;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    display: flex; /* 追加 */
+}
+
+.navi-right {
+    flex: 2;
+	text-align: center;
+    justify-content: center;
+    display: flex; /* 追加 */
+}
+
+.btn {
+    position: relative;
+    display: inline-block;
+    margin: 8px;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 1.00vw;
+    letter-spacing: 1px;
+    text-decoration: none;
+    color: #343434;
+    background: #ffffff9b;
+    border: 3px solid #2c2c2c;
+    cursor: pointer;
+    transition: ease-out 0.5s;
+    -webkit-transition: ease-out 0.5s;
+    -moz-transition: ease-out 0.5s;
+}
+
+.btn.btn-border-4::after,
+.btn.btn-border-4::before {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 0;
+    transition: .5s;
+}
+
+.btn.btn-border-4::after {
+    top: -9px;
+    left: -9px;
+    border-top: 3px solid transparent;
+    border-left: 3px solid transparent;
+}
+
+.btn.btn-border-4::before {
+    bottom: -9px;
+    right: -9px;
+    border-bottom: 3px solid transparent;
+    border-right: 3px solid transparent;
+}
+
+.btn.btn-border-4:hover {
+    color: #222222;
+}
+
+.btn.btn-border-4:hover::after,
+.btn.btn-border-4:hover::before {
+    width: calc(100% + 15px);
+    height: calc(100% + 15px);
+    border-color: #ff63ce;
+}
+
+
+
+.pre-slideshow {
+    width: 100%;
+	padding-top:150px;
+    /* border: 2px solid rgb(0, 0, 0); */
+    margin: 0;
+    box-sizing: border-box; /* ボーダーボックスモデルを使用して要素の幅がボーダーを含むように設定 */
+}
+
+.blank-space {
+    padding-bottom: 30px; /* 下部の余白を追加 */
+}
+
+/* 必要に応じて高さを調整 */
+.blank-space > * {
+    height: 10%; /* 例：子要素の高さを50pxに設定 */
+}
+
+.main {
+    display: flex;
+    /* flex-wrap: wrap; */
+	justify-content: space-around;
+
+}
+
+/* .main {
+	margin-left: 5%;
+	width:90%;
+	display: flex;
+} */
+
+#video-background {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	object-fit: cover;
+}
+
+
+main {
+	display: flex;
+	align-items: center;
+	height: 100vh;
+  }
+  
+  .main-top {
+    display: flex;
+	flex-wrap: wrap;
+    justify-content: center;
+    /* align-items: center; */
+    height: 80vh; /* ビューポートの高さいっぱいに表示 */
+}
+
+.sukinakoto {
+    width: 200px; /* 固定サイズを設定 */
+    height: 200px;
+    background-color: lightblue;
+    margin-right: 50px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+	position: relative;
+	border-radius: 10px; /* 丸みを持たせたい角の半径を設定 */
+}
+
+/* メディアクエリを使用して、画面幅が狭くなったときに2列にする */
+@media screen and (max-width: 600px) {
+    .sukinakoto {
+        width: calc(50% - 20px); /* 画面幅の50%からマージン分を引く */
+    }
+}
+
+/* さらに小さな画面幅の場合、1列にする */
+@media screen and (max-width: 400px) {
+    .sukinakoto {
+        width: calc(100% - 20px); /* 画面幅からマージン分を引く */
+    }
+}
+
+
+.sukinakoto-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* 画像を最前面に配置 */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px; /* 固定サイズを設定 */
+    height: 200px; /* 固定サイズを設定 */
+	width: 100%;
+}
+
+.sukinakoto.large {
+    transform: scale(0.3) translateY(300px);
+    width: 70%;
+    height: auto;
+    position: absolute; /* 要素を絶対位置に配置 */
+	margin: 0 20%;
+    z-index: 1; /* 他の要素より手前に表示 */
+}
+
+.reset-button {
+    padding: 5px 10px; /* 上下に5px、左右に10pxの余白を持つ */
+    font-size: 1.8vw; /* ボタンのテキストのサイズを14pxに設定する */
+}
+
+
+audio {
+	transform: scale(1.0); 
+    width: 30%;
+	height: 60px;       /* 幅を100%に設定 */
+}
+
+.sukinakoto_dummy {
+    width: 100%;
+    height: 200px;
+    position: relative; /* 相対位置に設定 */
+    top: 0; /* 上端に配置 */
+    display: block; /* ブロック要素として表示 */
+    clear: both; /* floating要素の下に配置 */
+}
+/* .sukinakoto:hover {
+	transform: scale(0.9);
+	top: -5px;
+    box-shadow: 0 8px 13px rgba(0, 0, 0, 0.4);
+} */
+
+
+
+/* 好きなこと１「ゲーム」のスライドショー部分 */
+
+/* スライドショー全体のコンテナ */
+.slideshow1 {
+	position: relative;
+	overflow: hidden;
+    justify-content:center;
+    margin:5px;
+}
+
+/* ラジオボタンのスライド切り替え用のインプット */
+input[name="slideshow1"] {
+	display: none;
+}
+
+/* スライドコンテンツのスタイル */
+/* slideContents: スライドの内容を含むコンテナ */
+.slideContents1 {
+	position: relative;
+	background:rgba(255, 255, 255, 0.1);
+    /*background-image: url("../image/background2.jpg");*/
+    background-position: 0 50%; /* 下部から中央へ調整 */
+    background-size: cover;/* 画像を要素に合わせてカバー */
+    width: 100%;
+    height: 30%;
+	padding-bottom: 15px;
+    /*overflow: hidden;*//* 要素からはみ出した部分を隠す */
+    background-repeat: no-repeat; /* 画像を繰り返し無しで表示 */
+	text-align: center;
+	-webkit-user-select: none; /* Safari での選択を無効化 */
+	user-select: none; /* その他のブラウザでの選択を無効化 */
+}
+
+/* スライドの各セクション */
+.slideContents1 section {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	transform: translateX(100%); /* 右からスライドインするアニメーション */
+	transition: transform .6s cubic-bezier(0.215, 0.61, 0.355, 1); /* アニメーションのトランジション */
+}
+
+/* スライド内の画像 */
+.slideContents1 section img {
+	max-width: 100%;
+	min-width: 230px;
+	height: auto;
+	padding: 30px 50px; /* 画像の左右の余白 */
+	padding-bottom:2px;
+	box-sizing: border-box;
+	vertical-align: middle;
+}
+@media (max-width: 400px) {
+	.slideContents1 section img {
+		aspect-ratio: 4 /4; /* 画像のアスペクト比 */
+		object-fit: cover; /* 画像を切り抜く */
+	}
+}
+
+/* 矢印（前後のスライドへ移動するためのボタン） */
+.arrow,
+.arrow label,
+.arrow .ico {
+	position: absolute;
+}
+.arrow {
+	top: 0;
+	margin: 0;
+	transition: all .3s; /* ホバー時のトランジション */
+	width: 20%; /* ナビゲーションボタンの幅 */
+	height: 100%
+}
+.prev {
+	left: 0;
+}
+.next {
+	right: 0;
+}
+.arrow:hover {
+	background: rgba(255,255,255,.2); /* ホバー時の背景色 */
+	width: 100px; /* ホバー時の横幅 */
+}
+.arrow,
+.arrow label {
+	cursor: pointer;
+	width: 50px;
+	height: 100%;
+}
+.arrow label {
+	top: 0;
+	left: 0;
+	z-index: 1;
+	width: 100%; /* ラベルの幅を100%に設定 */
+    height: 100%; /* ラベルの高さを100%に設定 */
+}
+.arrow .ico {
+	top: calc(50% - 6px);
+	width: 12px;
+	height: 12px;
+	border-top: 3px solid #fff;
+	opacity: 0;
+}
+.prev .ico {
+	left: 50%;
+	border-left: 3px solid #fff;
+	transform: rotate(-45deg);
+	transition: transform .3s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .3s; /* アイコンのトランジション */
+}
+.next .ico {
+	right: 50%;
+	border-right: 3px solid #fff;
+	transform: rotate(45deg);
+	transition: transform .3s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .3s; /* アイコンのトランジション */
+}
+.arrow:hover .ico {
+	opacity: .6; /* ホバー時のアイコンの透明度 */
+}
+.prev:hover .ico {
+	transform: translateX(-6px) rotate(-45deg); /* ホバー時のアイコンの移動と回転 */
+}
+.next:hover .ico {
+	transform: translateX(6px) rotate(45deg); /* ホバー時のアイコンの移動と回転 */
+}
+
+/* スライドのメカニズム */
+/* ラジオボタンに応じたスライドの表示制御 */
+#switch1:checked ~ .slideContents1 #slide1,
+#switch2:checked ~ .slideContents1 #slide2,
+#switch3:checked ~ .slideContents1 #slide3,
+#switch4:checked ~ .slideContents1 #slide4,
+#switch5:checked ~ .slideContents1 #slide5 {
+	position: relative;
+	transform: none; /* スライドを表示 */
+}
+#switch1:checked ~ .slideContents1 #slide4,
+#switch1:checked ~ .slideContents1 #slide5,
+#switch2:checked ~ .slideContents1 #slide5,
+#switch2:checked ~ .slideContents1 #slide1,
+#switch3:checked ~ .slideContents1 #slide1,
+#switch3:checked ~ .slideContents1 #slide2,
+#switch4:checked ~ .slideContents1 #slide2,
+#switch4:checked ~ .slideContents1 #slide3,
+#switch5:checked ~ .slideContents1 #slide3,
+#switch5:checked ~ .slideContents1 #slide4 {
+	transform: translateX(-100%); /* スライドを左にスライド */
+}
+#switch1:checked ~ .slideContents1 #slide3,
+#switch1:checked ~ .slideContents1 #slide4,
+#switch2:checked ~ .slideContents1 #slide4,
+#switch2:checked ~ .slideContents1 #slide5,
+#switch3:checked ~ .slideContents1 #slide5,
+#switch3:checked ~ .slideContents1 #slide1,
+#switch4:checked ~ .slideContents1 #slide1,
+#switch4:checked ~ .slideContents1 #slide2,
+#switch5:checked ~ .slideContents1 #slide2,
+#switch5:checked ~ .slideContents1 #slide3 {
+	transition-duration: 0s; /* トランジションを無効化 */
+}
+
+/* 矢印のメカニズム */
+.arrow label {
+	pointer-events: none; /* ラベルへのポインターイベントを無効化 */
+}
+#switch1:checked ~ .prev label[for="switch5"],
+#switch2:checked ~ .prev label[for="switch1"],
+#switch3:checked ~ .prev label[for="switch2"],
+#switch4:checked ~ .prev label[for="switch3"],
+#switch5:checked ~ .prev label[for="switch4"],
+#switch1:checked ~ .next label[for="switch2"],
+#switch2:checked ~ .next label[for="switch3"],
+#switch3:checked ~ .next label[for="switch4"],
+#switch4:checked ~ .next label[for="switch5"],
+#switch5:checked ~ .next label[for="switch1"] {
+	pointer-events: auto; /* ラベルへのポインターイベントを有効化 */
+}
+
+
+/* ずんだもん　*/
+
+		.zunda {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center; /* 全ての要素を中央に寄せる */
+			align-items: center;
+			margin-top: 0; /* 上部の余白を0に設定 */
+			margin-bottom: 0; /* 下部の余白を0に設定 */
+		}
+
+        .zunda img:nth-of-type(1) {
+            flex: 1;
+            max-width: 20%;
+			min-width: 15%;
+            height: 20%;
+            margin-left: 5%;
+			animation: fuwafuwa_1 1.5s ease 0s infinite;
+        }
+
+        .zunda > *:nth-child(2) {
+            flex: 3;
+            /* max-width: 60%;
+            height: auto;*/
+            margin-bottom: 2%;
+			margin-left: 5%;
+			margin-right: 5%;
+			position:relative;
+			width:300px;
+			height:280px;
+			max-height:280px;
+			background:#CAE6DB;
+			padding:10px;
+			text-align:left;
+			color:#000000;
+			/* -webkit-text-stroke: 1px #000000; */
+			font-size:1.14vw;
+			font-weight:bold;
+			border-radius:15px;
+			-webkit-border-radius:15px;
+			-moz-border-radius:15px;
+		}
+			.zunda > *:nth-child(2)::after {
+				border: solid transparent;
+				content:'';
+				height:0;
+				width:0;
+				pointer-events:none;
+				position:absolute;
+				border-color: rgba(202, 230, 219, 0);
+				border-top-width:10px;
+				border-bottom-width:10px;
+				border-left-width:20px;
+				border-right-width:20px;
+				margin-top: -10px;
+				border-right-color:#CAE6DB;
+				right:100%;
+				top:50%;
+			} 
+			
+        
+        .zunda > *:nth-child(3) {
+            width: 100%;
+			margin-left:50px;
+			margin-right:50px;
+		}
+		
+		.zunda > *:nth-child(4) {
+			width: 100%;
+			display:flex;
+			justify-content: center;
+			margin-left:100px;
+			margin-right:50px;
+        }
+
+		@keyframes fuwafuwa_1 {
+			0% {
+				transform: translate(0, 0);
+			}
+			50% {
+				transform: translate(0, -4%);
+			}
+			100% {
+				transform: translate(0, 0);
+			}
+		}
+
+/* ゆっくり */
+
+		.yukkuri {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center; /* 全ての要素を中央に寄せる */
+			align-items: center;
+			margin-top: 0; /* 上部の余白を0に設定 */
+			margin-bottom: 0; /* 下部の余白を0に設定 */
+
+		}
+
+        .yukkuri img:nth-of-type(1) {
+            flex: 1;
+            max-width: 20%;
+			min-width: 15%;
+            height: 20%;
+            margin-left: 5%;
+			animation: fuwafuwa_1 0.3s ease 0s infinite;
+        }
+
+        .yukkuri > *:nth-child(1) {
+            flex: 3;
+            /* max-width: 60%;
+            height: auto;*/
+            margin-bottom: 2%;
+			margin-left: 5%;
+			margin-right: 5%;
+			position:relative;
+			width:300px;
+			height:240px;
+			background:#F5DF98;
+			padding:20px;
+			text-align:left;
+			color:#333333;
+			font-size:1.14vw;
+			font-weight:bold;
+			border-radius:15px;
+			-webkit-border-radius:15px;
+			-moz-border-radius:15px;
+		}
+			.yukkuri > *:nth-child(1)::after {
+				border: solid transparent;
+				content:'';
+				height:0;
+				width:0;
+				pointer-events:none;
+				position:absolute;
+				border-color: rgba(245, 223, 152, 0);
+				border-top-width:10px;
+				border-bottom-width:10px;
+				border-left-width:30px;
+				border-right-width:30px;
+				margin-top: -10px;
+				border-left-color:#F5DF98;
+				left:100%;
+				top:50%;
+			} 
+			
+        
+			.yukkuri > *:nth-child(3) {
+				width: 100%;
+				margin-left:50px;
+				margin-right:50px;
+			}
+
+
+/* 好きなこと２「釣り」のスライドショー部分 */
+
+/* スライドショー全体のコンテナ */
+.slideshow2 {
+	position: relative;
+	overflow: hidden;
+    justify-content:center;
+    margin:5px;
+}
+
+/* ラジオボタンのスライド切り替え用のインプット */
+input[name="slideshow2"] {
+	display: none;
+}
+
+/* スライドコンテンツのスタイル */
+/* slideContents: スライドの内容を含むコンテナ */
+.slideContents2 {
+	position: relative;
+	background:rgba(255, 255, 255, 0.1);
+    /*background-image: url("../image/background2.jpg");*/
+    background-position: 0 50%; /* 下部から中央へ調整 */
+    background-size: cover;/* 画像を要素に合わせてカバー */
+    width: 100%;
+    height: 30%;
+	padding-bottom: 15px;
+    /*overflow: hidden;*//* 要素からはみ出した部分を隠す */
+    background-repeat: no-repeat; /* 画像を繰り返し無しで表示 */
+	text-align: center;
+	-webkit-user-select: none; /* Safari での選択を無効化 */
+	user-select: none; /* その他のブラウザでの選択を無効化 */
+}
+
+/* スライドの各セクション */
+.slideContents2 section {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	transform: translateX(100%); /* 右からスライドインするアニメーション */
+	transition: transform .6s cubic-bezier(0.215, 0.61, 0.355, 1); /* アニメーションのトランジション */
+}
+
+/* スライド内の画像 */
+.slideContents2 section img {
+	max-width: 100%;
+	min-width: 230px;
+	height: auto;
+	padding: 30px 50px; /* 画像の左右の余白 */
+	padding-bottom:2px;
+	box-sizing: border-box;
+	vertical-align: middle;
+}
+@media (max-width: 400px) {
+	.slideContents2 section img {
+		aspect-ratio: 4 /4; /* 画像のアスペクト比 */
+		object-fit: cover; /* 画像を切り抜く */
+	}
+}
+
+/* 矢印（前後のスライドへ移動するためのボタン） */
+.arrow,
+.arrow label,
+.arrow .ico {
+	position: absolute;
+}
+.arrow {
+	top: 0;
+	margin: 0;
+	transition: all .3s; /* ホバー時のトランジション */
+	width: 20%; /* ナビゲーションボタンの幅 */
+	height: 100%
+}
+.prev {
+	left: 0;
+}
+.next {
+	right: 0;
+}
+.arrow:hover {
+	background: rgba(255,255,255,.2); /* ホバー時の背景色 */
+	width: 100px; /* ホバー時の横幅 */
+}
+.arrow,
+.arrow label {
+	cursor: pointer;
+	width: 50px;
+	height: 100%;
+}
+.arrow label {
+	top: 0;
+	left: 0;
+	z-index: 1;
+	width: 100%; /* ラベルの幅を100%に設定 */
+    height: 100%; /* ラベルの高さを100%に設定 */
+}
+.arrow .ico {
+	top: calc(50% - 6px);
+	width: 12px;
+	height: 12px;
+	border-top: 3px solid #fff;
+	opacity: 0;
+}
+.prev .ico {
+	left: 50%;
+	border-left: 3px solid #fff;
+	transform: rotate(-45deg);
+	transition: transform .3s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .3s; /* アイコンのトランジション */
+}
+.next .ico {
+	right: 50%;
+	border-right: 3px solid #fff;
+	transform: rotate(45deg);
+	transition: transform .3s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .3s; /* アイコンのトランジション */
+}
+.arrow:hover .ico {
+	opacity: .6; /* ホバー時のアイコンの透明度 */
+}
+.prev:hover .ico {
+	transform: translateX(-6px) rotate(-45deg); /* ホバー時のアイコンの移動と回転 */
+}
+.next:hover .ico {
+	transform: translateX(6px) rotate(45deg); /* ホバー時のアイコンの移動と回転 */
+}
+
+/* スライドのメカニズム */
+/* ラジオボタンに応じたスライドの表示制御 */
+#switch6:checked ~ .slideContents2 #slide6,
+#switch7:checked ~ .slideContents2 #slide7,
+#switch8:checked ~ .slideContents2 #slide8,
+#switch9:checked ~ .slideContents2 #slide9,
+#switch10:checked ~ .slideContents2 #slide10 {
+	position: relative;
+	transform: none; /* スライドを表示 */
+}
+#switch6:checked ~ .slideContents2 #slide9,
+#switch6:checked ~ .slideContents2 #slide10,
+#switch7:checked ~ .slideContents2 #slide10,
+#switch7:checked ~ .slideContents2 #slide6,
+#switch8:checked ~ .slideContents2 #slide6,
+#switch8:checked ~ .slideContents2 #slide7,
+#switch9:checked ~ .slideContents2 #slide7,
+#switch9:checked ~ .slideContents2 #slide8,
+#switch10:checked ~ .slideContents2 #slide8,
+#switch10:checked ~ .slideContents2 #slide9 {
+	transform: translateX(-100%); /* スライドを左にスライド */
+}
+#switch2:checked ~ .slideContents2 #slide8,
+#switch2:checked ~ .slideContents2 #slide9,
+#switch7:checked ~ .slideContents2 #slide9,
+#switch7:checked ~ .slideContents2 #slide10,
+#switch8:checked ~ .slideContents2 #slide10,
+#switch8:checked ~ .slideContents2 #slide6,
+#switch9:checked ~ .slideContents2 #slide6,
+#switch9:checked ~ .slideContents2 #slide7,
+#switch10:checked ~ .slideContents2 #slide7,
+#switch10:checked ~ .slideContents2 #slide8 {
+	transition-duration: 0s; /* トランジションを無効化 */
+}
+
+/* 矢印のメカニズム */
+.arrow label {
+	pointer-events: none; /* ラベルへのポインターイベントを無効化 */
+}
+#switch6:checked ~ .prev label[for="switch10"],
+#switch7:checked ~ .prev label[for="switch6"],
+#switch8:checked ~ .prev label[for="switch7"],
+#switch9:checked ~ .prev label[for="switch8"],
+#switch10:checked ~ .prev label[for="switch9"],
+#switch6:checked ~ .next label[for="switch7"],
+#switch7:checked ~ .next label[for="switch8"],
+#switch8:checked ~ .next label[for="switch9"],
+#switch9:checked ~ .next label[for="switch10"],
+#switch10:checked ~ .next label[for="switch6"] {
+	pointer-events: auto; /* ラベルへのポインターイベントを有効化 */
+}
+
+
+/* ブラウザの幅が狭い場合のスタイル調整 */
+@media (max-width: 4px) {
+    .zundamon-kaisetu1 {
+        flex-direction: column; /* 縦方向に配置 */
+        align-items: center; /* 中央に配置 */
+	}
+
+.main {
+	flex: 1;
+	margin: 6%;
+	background-color: rgb(188, 224, 255);
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	height:auto;
+}
+}
+
+.line1 {
+	border: none;
+	border-bottom:dotted 5px  #013f1b;
+}
+
+.insta {
+	display: flex;
+	position: relative;
+	overflow: hidden;
+    justify-content:center;
+    margin:5px;
+}
+
+html { scroll-behavior: smooth;}
+
+header {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 10000;
+}
+
+.slider {
+	width: 50%;
+	margin: 100px 20%;
+	display: flex;
+	justify-content: center;
+  }
+  .slick-slide {
+	margin: 0px auto;
+	transition: all ease-in-out .3s;
+	opacity: .2;
+  }
+  .slick-slide img {
+	width: 100%;
+  }
+  .slick-prev:before,
+  .slick-next:before {
+	color: black;
+  }
+  .slick-active {
+	opacity: .5;
+  }
+  .slick-current {
+	opacity: 1;
+  }
+
+
+  .game__list {
+	width: 70%;
+	margin: 0 auto;
+	display: flex;
+	justify-content: center;
+	margin-top: 40px;
+  }
+  .game__list li {
+	width: calc(100% / 4 - 15px);
+  }
+  .game__list li:not(:last-child) {
+	margin-right: 30px;
+  }
+  .game__list-txt {
+	text-align: center;
+	margin-top: 10px;
+	font-size: 1.8vw;
+	-webkit-text-stroke: 1px #000000;
+
+  }
+  .game__list-txt dd {
+   margin-top: 10px;
+  }
+  .game__button {
+	border: 1px solid #242424;
+	width: 180px;
+	margin: 60px auto 0;
+  }
+  .game__button a {
+	text-align: center;
+	padding: 16px 0;
+	font-size: 14px;
+	color: #242424;
+  }
+  .game__button a:hover {
+	color: #fff;
+	background: #242424;
+  }
+
+
+/*以下、ポケモン部分*/
+
+.box {
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	display: block;
+	transition: opacity 1s ease; /* フェードアウト効果 */
+	z-index: 9998;
+}
+
+@keyframes float {
+	from {
+		transform: translateY(0px);
+	}
+	to {
+		transform: translateY(-20px);
+	}
+}
+#box1 {
+	background-image: url(../image/red.png);
+	animation: float 1s ease-in-out infinite alternate; /* フワフワ表示 */
+}
+
+#box2 {
+  background-image: url(../image/green.png);
+  animation: float 2s ease-in-out infinite alternate; /* フワフワ表示 */
+}
+
+#box3 {
+  background-image: url(../image/blue.png);
+  animation: float 3s ease-in-out infinite alternate; /* フワフワ表示 */
+}
+
+#box4 {
+  background-image: url(../image/yellow.png);
+  animation: float 0.5s ease-in-out infinite alternate; /* フワフワ表示 */
+}
+
+#block {
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	z-index: 9999; /* 最前面に表示する */
+}
+
+#counter {
+	margin-top: 140px;
+	margin-right: 30px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 30px;
+	color: white;
+	text-align: center;
+	-webkit-text-stroke: 0.5px #000000;
+}

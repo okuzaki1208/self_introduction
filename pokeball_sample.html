@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            display: block;
+            transition: opacity 1s ease; /* フェードアウト効果 */
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(0px);
+            }
+            to {
+                transform: translateY(-20px);
+            }
+        }
+        #box1 {
+            background-image: url(./image/red.png);
+            animation: float 1s ease-in-out infinite alternate; /* フワフワ表示 */
+        }
+
+        #box2 {
+          background-image: url(./image/green.png);
+          animation: float 2s ease-in-out infinite alternate; /* フワフワ表示 */
+        }
+
+        #box3 {
+          background-image: url(./image/blue.png);
+          animation: float 3s ease-in-out infinite alternate; /* フワフワ表示 */
+        }
+
+        #box4 {
+          background-image: url(./image/yellow.png);
+          animation: float 0.5s ease-in-out infinite alternate; /* フワフワ表示 */
+        }
+
+        #block {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            z-index: 9999; /* 最前面に表示する */
+        }
+
+        #counter {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<img id="block" src="./image/mb.png" style="width: 100px; height: 100px; position: absolute;">
+
+<div id="box1" class="box"></div>
+<div id="box2" class="box"></div>
+<div id="box3" class="box"></div>
+<div id="box4" class="box"></div>
+
+<div id="counter">捕まえた数: 0</div>
+
+<script>
+    const block = document.getElementById('block');
+    const boxes = document.querySelectorAll('.box');
+    const counterElement = document.getElementById('counter');
+    let posX = 0;
+    let posY = 0;
+    let velocityX = 0;
+    let velocityY = 0;
+    let rotationSpeed = 0;
+    let rotationAcceleration = 0;
+    const keysPressed = {};
+    let mouseMoveEnabled = false;
+    let destroyedCount = 0;
+    let collisionDisabled = false;
+
+    // Function to move and rotate the block
+    const moveAndRotateBlock = () => {
+        if (keysPressed['w']) {
+            velocityY -= 0.3;
+        }
+        if (keysPressed['a']) {
+            velocityX -= 0.3;
+        }
+        if (keysPressed['s']) {
+            velocityY += 0.3;
+        }
+        if (keysPressed['d']) {
+            velocityX += 0.3;
+        }
+
+        // Apply velocity
+        posX += velocityX;
+        posY += velocityY;
+
+        // Apply rotation acceleration based on velocity
+        rotationAcceleration = Math.sqrt(velocityX * velocityX + velocityY * velocityY) * 3; // Increased acceleration
+
+        // Apply rotation speed with different directions for 'a' and 'd' keys
+        if (keysPressed['a']) {
+            rotationSpeed -= rotationAcceleration;
+        } else if (keysPressed['d']) {
+            rotationSpeed += rotationAcceleration;
+        }
+
+        // Apply boundaries and bounce
+        if (posX < 0 || posX > window.innerWidth - 100) {
+            velocityX *= -1 / 3; // Reverse direction with 1/3 of the force
+            // Bring block back within bounds
+            if (posX < 0) posX = 0;
+            if (posX > window.innerWidth - 100) posX = window.innerWidth - 100;
+        }
+        if (posY < 0) posY = 0;
+        if (posY > window.innerHeight - 100) posY = window.innerHeight - 100;
+
+        // Check for collision with the boxes
+        if (!collisionDisabled) {
+            for (const box of boxes) {
+                if (
+                    posX + 100 > box.offsetLeft &&
+                    posX < box.offsetLeft + box.offsetWidth &&
+                    posY + 100 > box.offsetTop &&
+                    posY < box.offsetTop + box.offsetHeight
+                ) {
+                    // Collision detected, fade out the box
+                    box.style.opacity = 0;
+
+                    setTimeout(() => {
+                        // Randomly reposition the box
+                        const newBoxX = Math.floor(Math.random() * (window.innerWidth - 50));
+                        const newBoxY = Math.floor(Math.random() * (window.innerHeight - 50));
+                        box.style.left = `${newBoxX}px`;
+                        box.style.top = `${newBoxY}px`;
+                        box.style.opacity = 1;
+                        collisionDisabled = false; // 衝突を再度有効にする
+                    }, 1000); // 3秒後に再表示
+
+                    // Increment destroyed count
+                    destroyedCount++;
+                    // Update counter
+                    counterElement.textContent = `消した数: ${destroyedCount}`;
+
+                    // Disable collision detection for 3 seconds
+                    collisionDisabled = true;
+                }
+            }
+        }
+
+        // Update the position and rotation of the block
+        block.style.transform = `translate(${posX}px, ${posY}px) rotate(${rotationSpeed}deg)`;
+
+        // Apply damping to rotation speed (weaken inertia)
+        rotationSpeed *= 0.95;
+
+        // Request next frame
+        requestAnimationFrame(moveAndRotateBlock);
+    };
+
+    // Event listeners for key press and release
+    document.addEventListener('keydown', (e) => {
+        keysPressed[e.key] = true;
+    });
+
+    document.addEventListener('keyup', (e) => {
+        keysPressed[e.key] = false;
+    });
+
+    // Function to handle mouse movement
+    const handleMouseMove = (event) => {
+        if (mouseMoveEnabled) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            // Calculate velocity based on mouse position
+            velocityX = (mouseX - posX - 50) * 0.05; // 50 is half of block width
+            velocityY = (mouseY - posY - 50) * 0.05; // 50 is half of block height
+
+            // Apply rotation acceleration based on velocity
+            rotationAcceleration = Math.sqrt(velocityX * velocityX + velocityY * velocityY) * 3; // Increased acceleration
+
+            // Apply rotation speed with different directions for mouse movement
+            rotationSpeed = rotationAcceleration;
+        }
+    };
+
+    // Event listener for mouse movement
+    document.addEventListener('mousemove', handleMouseMove);
+
+    // Event listener for click on the block to toggle mouseMoveEnabled
+    block.addEventListener('click', () => {
+        mouseMoveEnabled = !mouseMoveEnabled;
+    });
+
+    // Set initial positions for boxes
+    boxes.forEach(box => {
+        const initialX = Math.random() * (window.innerWidth - 50);
+        const initialY = Math.random() * (window.innerHeight - 50);
+        box.style.left = `${initialX}px`;
+        box.style.top = `${initialY}px`;
+    });
+
+    // Start moving and rotating the block
+    requestAnimationFrame(moveAndRotateBlock);
+</script>
+
+</body>
+</html>
