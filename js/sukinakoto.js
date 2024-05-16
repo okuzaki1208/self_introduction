@@ -125,6 +125,51 @@ function toggleAudio(audioId) {
 
 
 
+    
+/* ポケモンゲット機能のON・OFFボタン*/
+
+    // ボタン要素を取得
+    const toggleBoxesButton = document.getElementById('toggleBoxesButton');
+
+    // ボタンがクリックされたときの処理
+    toggleBoxesButton.addEventListener('click', function() {
+        // 対象の要素を取得
+        const boxes = document.querySelectorAll('.box');
+        const mbImage = document.getElementById('block');
+        const counter = document.getElementById('counter');
+
+        // 各要素の表示を切り替える
+        boxes.forEach(box => {
+            // 現在の表示状態を取得
+            const display = window.getComputedStyle(box).display;
+
+            // 表示切り替え
+            if (display === 'block') {
+                box.style.display = 'none';
+            } else {
+                box.style.display = 'block';
+            }
+        });
+
+        // mb.pngの表示を切り替える
+        const mbDisplay = window.getComputedStyle(mbImage).display;
+        if (mbDisplay === 'block') {
+            mbImage.style.display = 'none';
+        } else {
+            mbImage.style.display = 'block';
+        }
+
+        // counterの表示を切り替える
+        const counterDisplay = window.getComputedStyle(counter).display;
+        if (counterDisplay === 'block') {
+            counter.style.display = 'none';
+            toggleBoxesButton.textContent = 'ポケモンゲット機能をON';
+        } else {
+            counter.style.display = 'block';
+            toggleBoxesButton.textContent = 'ポケモンゲット機能をOFF';
+        }
+    });
+
 
 
 
