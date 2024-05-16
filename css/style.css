@@ -47,6 +47,19 @@ body {
 	background-color: #ff6f6f;
   }
 
+  #toggleBoxesButton {
+	background-color: #4cb849;
+	padding: 10px 20px;
+	margin: 10px;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 5px;
+	font-size: 18px;
+	cursor: pointer;
+	display: inline-block; /* ボタンを横並びに配置 */
+	margin-left: 100px;
+  }
+
 
 .nav {
     display: flex;
